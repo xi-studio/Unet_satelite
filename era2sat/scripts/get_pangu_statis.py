@@ -3,7 +3,7 @@ import numpy as np
 import time
 import os
 
-res = glob.glob('data/china_fp16/*.npz')
+res = glob.glob('/home/tree/data/fp16/*.npz')
 
 res.sort()
 

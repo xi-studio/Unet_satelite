@@ -15,8 +15,8 @@ import torchvision.datasets as datasets
 from accelerate import Accelerator
 from torchvision.transforms import Compose, RandomResizedCrop, Resize, ToTensor
 
-from tpu_dataset import Radars
-from model import UNetModel
+from c_dataset import Radars
+from unet import UNetModel
 
 
 def training_function(args, config):
@@ -58,8 +58,8 @@ def training_function(args, config):
         model.train()
        
         with tqdm(total=len(train_loader)) as pbar:
-            for i, (x, y) in enumerate(train_loader):
-               out = model(x)
+            for i, (x, y, c) in enumerate(train_loader):
+               out = model(x, c)
                loss = criterion(out, y)
 
                optimizer.zero_grad()
@@ -75,9 +75,9 @@ def training_function(args, config):
         model.eval()
         accurate = 0
         num_elems = 0
-        for _, (x, y) in enumerate(valid_loader):
+        for _, (x, y, c) in enumerate(valid_loader):
             with torch.no_grad():
-                out = model(x)
+                out = model(x, c)
                 loss = criterion(out, y)
                 num_elems += 1
                 accurate += loss 

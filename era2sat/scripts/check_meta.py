@@ -3,11 +3,11 @@ import numpy as np
 import time
 import os
 
-res = glob.glob('data/china_fp16/*.npz')
+res = glob.glob('/home/tree/data/fp16/*.npz')
 
 res.sort()
 
-base_dir = 'data/china_himawari/H09_IR_%s_china_0p25.npy'
+base_dir = '/home/tree/data/satelite/H09_IR_%s_china_0p25.npy'
 
 mlist = []
 for x in res:
