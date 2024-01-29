@@ -34,7 +34,9 @@ class UNetModel(nn.Module):
             )
 
         #self.attention = SpatialTransformer(channels, n_heads, tf_layers, d_cond),
-        self.atten = SpatialTransformer(self.mul * 8, 8, 6, 40)
+        self.atten1 = SpatialTransformer(self.mul * 8, 8, 2, 40)
+        self.atten2 = SpatialTransformer(self.mul * 8, 8, 2, 40)
+
         self.inc = double_conv(self.in_channels, self.mul)
         self.down1 = down(self.mul, self.mul * 2)
         self.down2 = down(self.mul * 2, self.mul * 4)
@@ -57,17 +59,25 @@ class UNetModel(nn.Module):
         x3 = self.down2(x2)
         x4 = self.down3(x3)
         x5 = self.down4(x4)
-        x5 = self.atten(x5, c)
+        x5 = self.atten1(x5, c)
         
         x = self.up0(x5)
         x = torch.cat([x, x4], dim=1)
+        x = self.dropout(x)
+
         x = self.up1(x)
         x = torch.cat([x, x3], dim=1)
+        x = self.dropout(x)
+        x = self.atten2(x, c)
+
         x = self.up2(x)
         x = torch.cat([x, x2], dim=1)
+        x = self.dropout(x)
+
         x = self.up3(x)
         x = torch.cat([x, x1], dim=1)
         x = self.dropout(x)
+
         x = self.out(x)
 
         return x 

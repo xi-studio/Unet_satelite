@@ -24,7 +24,7 @@ class Radars(Dataset):
             data  = np.load(name)
             sat = data['sat']
             obs = data['obs']
-            cond = np.zeros((1,40), dtype=np.float32)
+            cond = np.zeros((1,40), dtype=np.float16)
 
             tname = name.split('/')[-1]
             r = time.strptime(tname[:-4], '%Y-%m-%dT%H')
@@ -33,12 +33,12 @@ class Radars(Dataset):
             cond[:, t_mon] = 1
             cond[:, t_day+12] = 1
 
-            sat = sat.astype(np.float32)
-            obs = obs.astype(np.float32)
+            sat = sat.astype(np.float16)
+            obs = obs.astype(np.float16)
         else:
-            sat = np.ones((10, 256, 256), dtype=np.float32)
-            obs = np.ones((69, 256, 256), dtype=np.float32)
-            cond = np.ones((1,40), dtype=np.float32)
+            sat = np.ones((10, 256, 256), dtype=np.float16)
+            obs = np.ones((69, 256, 256), dtype=np.float16)
+            cond = np.ones((1,40), dtype=np.float16)
 
         return obs, sat, cond
 
