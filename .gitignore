@@ -160,5 +160,7 @@ cython_debug/
 #.idea/
 ./data
 era2sat/data/
+sat_fix_era/data/
 *.out
 *log*
+
