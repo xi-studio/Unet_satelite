@@ -47,13 +47,14 @@ def training_function(args, config):
     criterion = nn.L1Loss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
-    accelerator = Accelerator(log_with="all", project_dir='logs_era')
+    accelerator = Accelerator(log_with="all", project_dir='logs_fix')
     hps = {"num_iterations": epoch_num, "learning_rate": learning_rate}
     accelerator.init_trackers(f"log_{log_time}" , config=hps)
     model, optimizer, train_loader, valid_loader = accelerator.prepare(model, optimizer, train_loader, valid_loader)
 
     best_acc = 1
     overall_step = 0
+    overall_step1 = 0
     for epoch in range(epoch_num):
         model.train()
        
@@ -81,13 +82,16 @@ def training_function(args, config):
                 loss = criterion(out, y)
                 num_elems += 1
                 accurate += loss 
+
+                overall_step += 1
+                accelerator.log({"valid_loss": loss}, step=overall_step1)
     
         eval_metric = accurate / num_elems
         accelerator.print(f"epoch {epoch}: {eval_metric:.5f}")
 
         if eval_metric < best_acc:
             best_acc = eval_metric
-            accelerator.save_model(model, f"./logs_era/checkpoint_{log_time}/best", safe_serialization=False)
+            accelerator.save_model(model, f"./logs_fix/checkpoint_{log_time}/best", safe_serialization=False)
 
 
 def main(): 

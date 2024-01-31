@@ -1,5 +1,5 @@
 - config:
     lr: 4.0e-5
-    in_channels: 10
-    out_channels: 69
+    in_channels: 79
+    out_channels: 4
     mul_channels: 128

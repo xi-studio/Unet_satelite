@@ -36,8 +36,8 @@ class Radars(Dataset):
             sat = sat.astype(np.float16)
             obs = obs.astype(np.float16)
         else:
-            sat = np.ones((10, 256, 256), dtype=np.float16)
-            obs = np.ones((69, 256, 256), dtype=np.float16)
+            sat = np.ones((79, 256, 256), dtype=np.float16)
+            obs = np.ones((4, 256, 256), dtype=np.float16)
             cond = np.ones((1,40), dtype=np.float16)
 
         return sat, obs, cond
