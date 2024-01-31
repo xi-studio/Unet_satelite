@@ -22,7 +22,7 @@ class Radars(Dataset):
         if self.fake!=True:
             name = self.list[index]
             data  = np.load(name)
-            sat = data['sat']
+            sat = data['pre']
             obs = data['obs']
             cond = np.zeros((1,40), dtype=np.float16)
 
@@ -46,10 +46,10 @@ class Radars(Dataset):
         return len(self.list)
 
 if __name__ == '__main__':
-    #filename = np.load('data/train/train.npy')
-    filename = np.arange(1000)
-    a = Radars(filenames=filename, fake=True)
-    #a = Radars(filenames=filename, fake=False)
+    filename = np.load('data/train_72/train.npy')
+    #filename = np.arange(1000)
+    #a = Radars(filenames=filename, fake=True)
+    a = Radars(filenames=filename, fake=False)
 
     train_loader = DataLoader(a, batch_size=16, shuffle=True, num_workers=4)
     for x in train_loader:
