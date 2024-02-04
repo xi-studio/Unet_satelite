@@ -2,6 +2,7 @@ python tpu_train.py --cfg configs/tpu_unet.yaml --batch_size 1 --filenames ./dat
 
 accelerate launch tpu_train.py --cfg configs/tpu_unet.yaml --batch_size 1 --filenames ./data/pan_fp16_meta.npy --num_epoch 1 --log_time 0121 --fake True
 
-accelerate launch train.py --cfg configs/unet.yaml --batch_size 1 --filenames ./data/train --num_epoch 1 --log_time 0128 --fake True
+
+accelerate launch train.py --cfg configs/unet.yaml --batch_size 4 --filenames ./data/train_sat --num_epoch 300 --log_time 0204 
 
 accelerate launch predict.py --cfg configs/unet.yaml --batch_size 1 --filenames ./data/train --num_epoch 1 --log_time 0129

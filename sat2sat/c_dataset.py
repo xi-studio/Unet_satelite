@@ -20,23 +20,25 @@ class Radars(Dataset):
     def __getitem__(self, index):
 
         if self.fake!=True:
-            name = self.list[index]
-            data  = np.load(name)
-            sat = data['sat']
-            obs = data['obs']
+            t0 = np.load(self.list[index][0][3:])
+            t1 = np.load(self.list[index][1][3:])
+            t2 = np.load(self.list[index][2][3:])
+
+            now = (self.list[index][0].split('/')[-1][:-4]).split('_')[2]
+            r = time.strptime(now,'%Y%m%d%H%M')
+
             cond = np.zeros((1,40), dtype=np.float16)
 
-            tname = name.split('/')[-1]
-            r = time.strptime(tname[:-4], '%Y-%m-%dT%H')
             t_mon = r.tm_mon
             t_day = r.tm_hour
             cond[:, t_mon] = 1
             cond[:, t_day+12] = 1
 
+            sat = np.concatenate((t0, t1), axis=0)
             sat = sat.astype(np.float16)
-            obs = obs.astype(np.float16)
+            obs = t2.astype(np.float16)
         else:
-            sat = np.ones((10, 256, 256), dtype=np.float16)
+            sat = np.ones((20, 256, 256), dtype=np.float16)
             obs = np.ones((10, 256, 256), dtype=np.float16)
             cond = np.ones((1,40), dtype=np.float16)
 
