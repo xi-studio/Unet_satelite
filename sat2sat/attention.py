@@ -165,11 +165,13 @@ class CrossAttention(nn.Module):
         v = self.to_v(cond)
 
         # Use flash attention if it's available and the head size is less than or equal to `128`
-        if CrossAttention.use_flash_attention and self.flash is not None and not has_cond and self.d_head <= 128:
-            return self.flash_attention(q, k, v)
-        # Otherwise, fallback to normal attention
-        else:
-            return self.normal_attention(q, k, v)
+#        if CrossAttention.use_flash_attention and self.flash is not None and not has_cond and self.d_head <= 128:
+#            return self.flash_attention(q, k, v)
+#        # Otherwise, fallback to normal attention
+#        else:
+#            return self.normal_attention(q, k, v)
+
+        return F.scaled_dot_product_attention(q, k, v)
 
     def flash_attention(self, q: torch.Tensor, k: torch.Tensor, v: torch.Tensor):
         """
